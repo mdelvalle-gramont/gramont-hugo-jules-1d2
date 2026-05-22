@@ -1,0 +1,53 @@
+############# Portuguese navigation ##############
+
+# main menu
+[[main]]
+name = "Início"
+url = "/"
+weight = 1
+
+[[main]]
+name = "Serviços"
+url = "/servicos"
+weight = 2
+
+[[main]]
+name = "Projetos"
+url = "/projetos"
+weight = 3
+
+[[main]]
+name = "Sobre"
+url = "/sobre"
+weight = 4
+
+[[main]]
+name = "Junte-se"
+url = "/junte-se"
+weight = 5
+
+[[main]]
+name = "Contato"
+url = "/contato"
+weight = 6
+
+# footer menu
+[[footer]]
+name = "Sobre"
+url = "/sobre"
+weight = 1
+
+[[footer]]
+name = "Serviços"
+url = "/servicos"
+weight = 2
+
+[[footer]]
+name = "Projetos"
+url = "/projetos"
+weight = 3
+
+[[footer]]
+name = "Contato"
+url = "/contato"
+weight = 4

@@ -1,0 +1,23 @@
+################ Spanish language ##################
+[es]
+label = "Es"
+locale = "es-ar"
+languageName = "Español"
+contentDir = "content/spanish"
+weight = 1
+
+################ English language ##################
+[en]
+label = "En"
+locale = "en-us"
+languageName = "English"
+contentDir = "content/english"
+weight = 2
+
+################ Portuguese language ##################
+[pt]
+label = "Pt"
+locale = "pt-br"
+languageName = "Português"
+contentDir = "content/portuguese"
+weight = 3

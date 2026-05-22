@@ -1,0 +1,12 @@
+[technical_sheet]
+other = "Ficha Técnica"
+[client]
+other = "Cliente"
+[location]
+other = "Ubicación"
+[scope]
+other = "Alcance del trabajo"
+[year]
+other = "Año"
+[view_more]
+other = "Ver más"

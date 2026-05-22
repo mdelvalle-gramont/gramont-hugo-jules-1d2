@@ -1,0 +1,21 @@
+{{ define "main" }}
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="mb-8 text-center">{{ .Title }}</h1>
+      </div>
+      {{ range .Pages }}
+      <div class="col-12 md:col-6 lg:col-4 mb-8">
+        <div class="card border p-4">
+          <h3 class="h4 mb-2"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+          <p class="mb-0"><strong>{{ T "client" | default "Cliente" }}:</strong> {{ .Params.cliente }}</p>
+          <p class="mb-0"><strong>{{ T "year" | default "Año" }}:</strong> {{ .Params.anio }}</p>
+          <a href="{{ .Permalink }}" class="btn btn-outline-primary btn-sm mt-3">{{ T "view_more" | default "Ver más" }}</a>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

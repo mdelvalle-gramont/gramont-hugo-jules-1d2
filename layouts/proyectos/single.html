@@ -1,0 +1,23 @@
+{{ define "main" }}
+<section class="section">
+  <div class="container">
+    <div class="row justify-center">
+      <div class="col-12 md:col-8">
+        <h1 class="mb-4">{{ .Title }}</h1>
+        <div class="content">
+          <div class="technical-sheet bg-light p-4 mb-4 border">
+            <h4 class="mb-3">{{ T "technical_sheet" | default "Ficha Técnica" }}</h4>
+            <ul class="list-unstyled">
+              <li><strong>{{ T "client" | default "Cliente" }}:</strong> {{ .Params.cliente }}</li>
+              <li><strong>{{ T "location" | default "Ubicación" }}:</strong> {{ .Params.ubicacion }}</li>
+              <li><strong>{{ T "scope" | default "Alcance" }}:</strong> {{ .Params.alcance }}</li>
+              <li><strong>{{ T "year" | default "Año" }}:</strong> {{ .Params.anio }}</li>
+            </ul>
+          </div>
+          {{ .Content }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}

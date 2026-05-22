@@ -1,0 +1,53 @@
+############# Spanish navigation ##############
+
+# main menu
+[[main]]
+name = "Inicio"
+url = "/"
+weight = 1
+
+[[main]]
+name = "Servicios"
+url = "/servicios"
+weight = 2
+
+[[main]]
+name = "Proyectos"
+url = "/proyectos"
+weight = 3
+
+[[main]]
+name = "Nosotros"
+url = "/nosotros"
+weight = 4
+
+[[main]]
+name = "Sumate"
+url = "/sumate"
+weight = 5
+
+[[main]]
+name = "Contacto"
+url = "/contacto"
+weight = 6
+
+# footer menu
+[[footer]]
+name = "Nosotros"
+url = "/nosotros"
+weight = 1
+
+[[footer]]
+name = "Servicios"
+url = "/servicios"
+weight = 2
+
+[[footer]]
+name = "Proyectos"
+url = "/proyectos"
+weight = 3
+
+[[footer]]
+name = "Contacto"
+url = "/contacto"
+weight = 4
