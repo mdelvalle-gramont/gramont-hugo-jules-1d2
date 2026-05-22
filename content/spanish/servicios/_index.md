@@ -1,3 +1,4 @@
 ---
 title: "Servicios"
+type: "services"
 ---

@@ -61,16 +61,18 @@
           </div>
         </div>
       </div>
-      <div class="client-carousel flex whitespace-nowrap animate-slide">
-        <div class="flex items-center gap-16 px-8">
-          {{ range .logos }}
-            <span class="text-xl font-bold text-white opacity-40 uppercase whitespace-nowrap">{{ .name }}</span>
-          {{ end }}
-        </div>
-        <div class="flex items-center gap-16 px-8">
-          {{ range .logos }}
-            <span class="text-xl font-bold text-white opacity-40 uppercase whitespace-nowrap">{{ .name }}</span>
-          {{ end }}
+      <div class="client-carousel-container relative">
+        <div class="client-carousel flex whitespace-nowrap animate-slide">
+          <div class="flex items-center gap-16 px-8">
+            {{ range .logos }}
+              <span class="text-xl font-bold text-white opacity-40 uppercase whitespace-nowrap">{{ .name }}</span>
+            {{ end }}
+          </div>
+          <div class="flex items-center gap-16 px-8">
+            {{ range .logos }}
+              <span class="text-xl font-bold text-white opacity-40 uppercase whitespace-nowrap">{{ .name }}</span>
+            {{ end }}
+          </div>
         </div>
       </div>
     </section>
@@ -81,9 +83,9 @@
         100% { transform: translateX(-50%); }
       }
       .animate-slide {
-        animation: slide 30s linear infinite;
+        animation: slide 40s linear infinite;
       }
-      .client-carousel:hover {
+      .client-carousel-container:hover .animate-slide {
         animation-play-state: paused;
       }
     </style>
@@ -106,7 +108,7 @@
                   <h3 class="h5 mb-3">{{ .title | markdownify }}</h3>
                   <p class="text-sm mb-4">{{ .content | markdownify }}</p>
                 </div>
-                <a href="{{ .link | relLangURL }}" class="text-primary font-semibold text-sm hover:underline">Ver detalles &rarr;</a>
+                <a href="{{ .link | relLangURL }}" class="text-primary font-semibold text-sm hover:underline">{{ T "view_details" | default "Ver detalles" }} &rarr;</a>
               </div>
             </div>
           {{ end }}
@@ -126,20 +128,23 @@
           {{ $projects_link := "/proyectos" }}
           {{ if eq .Language.Lang "en" }}{{ $projects_link = "/projects" }}{{ end }}
           {{ if eq .Language.Lang "pt" }}{{ $projects_link = "/projetos" }}{{ end }}
-          <a href="{{ $projects_link | absLangURL }}" class="btn btn-outline-primary">{{ T "view_all_projects" | default "Ver todos los proyectos" }}</a>
+          <a href="{{ $projects_link | relLangURL }}" class="btn btn-outline-primary">{{ T "view_all_projects" | default "Ver todos los proyectos" }}</a>
         </div>
       </div>
       <div class="row">
-        {{ range (where site.RegularPages "Section" "proyectos") | first 6 }}
+        {{ $featured := where (where site.RegularPages "Type" "projects") ".Params.featured" true }}
+        {{ range $featured | first 6 }}
           <div class="md:col-6 lg:col-4 mb-8">
-            <div class="card border bg-white p-4 h-full">
+            <div class="card border bg-white p-4 h-full flex flex-col">
               {{ if .Params.image }}
-                {{ partial "image" (dict "Src" .Params.image "Alt" .Title "Class" "mb-4 w-full h-48 object-cover") }}
+                {{ partial "image" (dict "Src" .Params.image "Alt" .Title "Class" "mb-4 w-full h-48 object-cover rounded") }}
               {{ end }}
               <h3 class="h5 mb-2">{{ .Title }}</h3>
               <p class="text-sm mb-1"><strong>{{ T "location" | default "Ubicación" }}:</strong> {{ .Params.ubicacion }}</p>
-              <p class="text-sm mb-4">{{ .Description | truncate 100 }}</p>
-              <a href="{{ .Permalink }}" class="text-primary font-bold">{{ T "view_project" | default "Ver proyecto" }} &rarr;</a>
+              <p class="text-sm mb-4 opacity-80">{{ .Description | truncate 100 }}</p>
+              <div class="mt-auto">
+                <a href="{{ .Permalink }}" class="text-primary font-bold">{{ T "view_project" | default "Ver proyecto" }} &rarr;</a>
+              </div>
             </div>
           </div>
         {{ end }}
