@@ -56,7 +56,9 @@ jobs:
           HUGO_ENV: production
           PATH: ${{ github.workspace }}/node_modules/.bin:$PATH
         run: |
-          node scripts/themeGenerator.js
+          # Try to run theme generator, but don't fail if it doesn't work
+          # as we have custom overrides anyway.
+          node scripts/themeGenerator.js || true
           hugo \
             --gc \
             --minify \
