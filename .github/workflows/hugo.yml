@@ -27,28 +27,11 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.161.1'
+          hugo-version: '0.123.0'
           extended: true
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '>=1.21'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build CSS and Site
+      - name: Build
         run: |
-          node scripts/themeGenerator.js || true
-          # Explicitly build Tailwind CSS using the CLI to bypass Hugo's internal Node call
-          ./node_modules/.bin/tailwindcss -i assets/css/main.css -o assets/css/tailwind-built.css --minify
-          # Run Hugo (it will now just use the pre-built file)
           hugo --gc --minify --baseURL "/"
         env:
           HUGO_ENVIRONMENT: production

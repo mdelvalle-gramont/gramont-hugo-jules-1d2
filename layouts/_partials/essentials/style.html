@@ -50,16 +50,13 @@
   {{ end }}
 {{ end }}
 
-<!-- Load pre-compiled Tailwind CSS instead of transforming it via Hugo -->
-{{ $tailwindCSS := resources.Get "css/tailwind-built.css" }}
-{{ if $tailwindCSS }}
-  {{ $styles = $styles | append $tailwindCSS }}
-{{ else }}
-  <!-- Fallback to main.css without transformation if built is missing (only for safety) -->
-  {{ $styles = $styles | append (resources.Get "css/main.css") }}
-{{ end }}
+{{ $mainCSS := resources.Get "css/main.css" }}
+{{ $tailwindOpts := dict "inlineImports" true }}
+{{ $tailwindCSS := $mainCSS | css.TailwindCSS $tailwindOpts }}
 
+{{ $styles = $styles | append $tailwindCSS }}
 {{ $styles = $styles | resources.Concat "css/style.css" }}
+
 {{ $stylesLazy = $stylesLazy | resources.Concat "css/style-lazy.css" }}
 
 {{ if hugo.IsProduction }}
@@ -67,17 +64,18 @@
   {{ $stylesLazy = $stylesLazy | minify | fingerprint }}
 {{ end }}
 
+
 <!-- link main style -->
 <link
   href="{{ $styles.RelPermalink }}"
-  {{ if $styles.Data.Integrity }}integrity="{{ $styles.Data.Integrity }}"{{ end }}
+  integrity="{{ $styles.Data.Integrity }}"
   rel="stylesheet" />
 
 <!-- link lazy style -->
 <link
   rel="stylesheet"
   href="{{ $stylesLazy.RelPermalink }}"
-  {{ if $stylesLazy.Data.Integrity }}integrity="{{ $stylesLazy.Data.Integrity }}"{{ end }}
+  integrity="{{ $stylesLazy.Data.Integrity }}"
   media="print"
   onload="this.media='all'; this.onload=null;" />
 
