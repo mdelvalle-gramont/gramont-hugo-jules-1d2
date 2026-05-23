@@ -24,10 +24,6 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
-
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
@@ -37,15 +33,38 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '>=1.21'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build CSS and Site
         run: |
+          # 1. Generate theme colors
           node scripts/themeGenerator.js || true
+
+          # 2. Vendor Hugo modules to get CSS files
+          hugo mod vendor
+
+          # 3. Consolidate all CSS in assets/css for the standalone Tailwind build
+          mkdir -p assets/css
+          find _vendor -name "*.css" -exec cp -v {} assets/css/ \; || true
+          # Also copy the generated theme if it went to the themes folder
+          cp -v themes/hugoplate/assets/css/generated-theme.css assets/css/ 2>/dev/null || true
+
+          # 4. Build Tailwind CSS explicitly via CLI (Bypasses Hugo's Node permission error)
           ./node_modules/.bin/tailwindcss -i assets/css/main.css -o assets/css/tailwind-built.css --minify
+
+          # 5. Run Hugo with the dynamic baseURL
           hugo \
             --gc \
             --minify \
