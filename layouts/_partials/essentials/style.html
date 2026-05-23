@@ -52,7 +52,7 @@
 
 {{ $mainCSS := resources.Get "css/main.css" }}
 {{ $tailwindOpts := dict "inlineImports" true }}
-{{ $tailwindCSS := $mainCSS | noop }}
+{{ $tailwindCSS := $mainCSS | css.TailwindCSS $tailwindOpts }}
 
 {{ $styles = $styles | append $tailwindCSS }}
 {{ $styles = $styles | resources.Concat "css/style.css" }}
@@ -78,3 +78,13 @@
   integrity="{{ $stylesLazy.Data.Integrity }}"
   media="print"
   onload="this.media='all'; this.onload=null;" />
+
+<style>
+  :root { --color-primary: #F58634; }
+  .btn-primary { background-color: #F58634 !important; border-color: #F58634 !important; color: #fff !important; }
+  .btn-outline-primary { border-color: #F58634 !important; color: #F58634 !important; }
+  .btn-outline-primary:hover { background-color: #F58634 !important; color: #fff !important; }
+  .text-primary { color: #F58634 !important; }
+  .bg-primary { background-color: #F58634 !important; }
+  .bg-light { background-color: #f8f9fa !important; }
+</style>
