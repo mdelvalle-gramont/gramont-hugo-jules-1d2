@@ -14,61 +14,38 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-defaults:
-  run:
-    shell: bash
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      HUGO_VERSION: 0.161.1
     steps:
-      - name: Install Hugo CLI
-        run: |
-          wget -O ${{ runner.temp }}/hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz
-          tar -xf ${{ runner.temp }}/hugo.tar.gz -C ${{ runner.temp }}
-          mkdir -p ${HOME}/.local/bin
-          mv ${{ runner.temp }}/hugo ${HOME}/.local/bin/hugo
-          echo "${HOME}/.local/bin" >> $GITHUB_PATH
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v4
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.161.1'
+          extended: true
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '22'
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: ">=1.21"
+      - name: Install dependencies
+        run: npm install
 
-      - name: Install Node.js dependencies
+      - name: Build
         run: |
-          npm install
-          echo "\${{ github.workspace }}/node_modules/.bin" >> \$GITHUB_PATH
-
-      - name: Build with Hugo
+          export PATH=$PATH:$(pwd)/node_modules/.bin
+          node scripts/themeGenerator.js || true
+          hugo --gc --minify --baseURL "/"
         env:
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
-        run: |
-          # Try to run theme generator, but don't fail if it doesn't work
-          # as we have custom overrides anyway.
-          node scripts/themeGenerator.js || true
-          hugo \
-            --gc \
-            --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
