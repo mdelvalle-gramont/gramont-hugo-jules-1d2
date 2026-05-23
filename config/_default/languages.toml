@@ -1,20 +1,23 @@
 ################ Spanish language ##################
 [es]
-label = "Español"
-locale = "es-ar"
 contentDir = "content/spanish"
 weight = 1
+[es.params]
+  label = "Español"
+  locale = "es-ar"
 
 ################ English language ##################
 [en]
-label = "English"
-locale = "en-us"
 contentDir = "content/english"
 weight = 2
+[en.params]
+  label = "English"
+  locale = "en-us"
 
 ################ Portuguese language ##################
 [pt]
-label = "Português"
-locale = "pt-br"
 contentDir = "content/portuguese"
 weight = 3
+[pt.params]
+  label = "Português"
+  locale = "pt-br"
