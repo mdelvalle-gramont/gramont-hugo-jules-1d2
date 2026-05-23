@@ -13,3 +13,6 @@ resources
 jsconfig.json
 go.sum
 yarn.lock
+_vendor/
+assets/css/tailwind-built.css
+assets/css/generated-theme.css

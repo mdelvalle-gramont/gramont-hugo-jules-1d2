@@ -52,22 +52,28 @@ jobs:
           # 1. Generate theme colors
           node scripts/themeGenerator.js || true
 
-          # 2. Vendor Hugo modules to get CSS files
+          # 2. Vendor Hugo modules to get original assets
           hugo mod vendor
 
-          # 3. Consolidate all CSS in assets/css for the standalone Tailwind build
-          mkdir -p assets/css
-          find _vendor -name "*.css" -exec cp -v {} assets/css/ \; || true
-          # Also copy the generated theme if it went to the themes folder
-          cp -v themes/hugoplate/assets/css/generated-theme.css assets/css/ 2>/dev/null || true
+          # 3. Consolidate all CSS in assets/css using the Python script
+          # This handles imports, Scss mapping, and missing file fallbacks
+          python3 scripts/consolidate_assets.py
 
-          # 4. Build Tailwind CSS explicitly via CLI (Bypasses Hugo's Node permission error)
+          # Debug: List consolidated assets
+          echo "Listing consolidated assets in assets/css/:"
+          ls -la assets/css/
+
+          # 4. Build Tailwind CSS explicitly via CLI
+          # Ensure execution permissions (though usually fine via npm)
+          chmod +x ./node_modules/.bin/tailwindcss
           ./node_modules/.bin/tailwindcss -i assets/css/main.css -o assets/css/tailwind-built.css --minify
 
           # 5. Run Hugo with the dynamic baseURL
+          # We force sync static to ensure everything is in place
           hugo \
             --gc \
             --minify \
+            --forceSyncStatic \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
         env:
           HUGO_ENVIRONMENT: production
