@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -43,15 +43,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build
+      - name: Build CSS and Site
         run: |
-          export PATH=$PATH:$(pwd)/node_modules/.bin
           node scripts/themeGenerator.js || true
+          # Explicitly build Tailwind CSS using the CLI to bypass Hugo's internal Node call
+          ./node_modules/.bin/tailwindcss -i assets/css/main.css -o assets/css/tailwind-built.css --minify
+          # Run Hugo (it will now just use the pre-built file)
           hugo --gc --minify --baseURL "/"
         env:
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
-          NODE_OPTIONS: ""
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
